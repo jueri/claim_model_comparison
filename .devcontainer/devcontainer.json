@@ -63,7 +63,7 @@
 	// siehe: https://github.com/microsoft/vscode-remote-release/issues/2590
 	"runArgs": [
 		"--name",
-		"tmp_container",
-		"--env-file",
-		"${localWorkspaceFolder}/.devcontainer/.env"
+		"claim_model_comparison",
+		// "--env-file",
+		// "${localWorkspaceFolder}/.devcontainer/.env"
 	],}
