@@ -5,6 +5,16 @@ Levy et al. (2014) -> Logistic regression classifyer
 - Keyword that
 - sentiment
 - subjectivity
+
+              precision    recall  f1-score   support
+
+       False       0.74      0.71      0.72       235
+        True       0.74      0.78      0.76       259
+
+    accuracy                           0.74       494
+   macro avg       0.74      0.74      0.74       494
+weighted avg       0.74      0.74      0.74       494
+
 """
 
 import os

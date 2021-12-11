@@ -5,12 +5,17 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 from sklearn.base import BaseEstimator
 from sklearn.feature_extraction.text import TfidfVectorizer
 from textblob import TextBlob
+from sklearn.preprocessing import normalize
 
 from sklearn.metrics.pairwise import cosine_similarity
+import spacy
 
 NLTK_DATA_PATH = os.path.join("data", "nltk_data")
 nltk.data.path.append(NLTK_DATA_PATH)
 nltk.download("vader_lexicon", NLTK_DATA_PATH)
+
+SPACY_MODEL_NAME = "en_core_web_sm"
+SPACY_DATA_PATH = os.path.join("data", "spacy_data", SPACY_MODEL_NAME)
 
 
 class ThatToken(BaseEstimator):
@@ -93,20 +98,115 @@ class SentenceTopicSimilarity(BaseEstimator):
 
 
 """
-Hassan et al. (2017) -> SVM
-- TF-IDF
-- POS
-- NER
+Liebeck et al. (2016) -> SVM
+- Unigrams
+- L2 Normalized POS Tag distribution of STTS
+- L2 Normalized POS Tag dependencies TIGER Schema
 """
+# unigrams
+
+# POS Tags distribution
+class POSTagDistribution(BaseEstimator):
+    """POS Distribution encoding"""
+
+    def get_feature_names(self):
+        return [self.__class__.__name__]
+
+    def fit(self, X, y):
+        self.empty_distribution = {
+            k: 0 for k in range(len(spacy.glossary.GLOSSARY.items()))
+        }  # count all possible tags
+        self.nlp = spacy.load(SPACY_DATA_PATH)
+        return self
+
+    def transform(self, X):
+        results = []
+        for sentence in X:
+            doc = self.nlp(sentence)
+            distribution = self.empty_distribution.copy()
+
+            for k, v in doc.count_by(spacy.attrs.POS).items():
+                distribution[k] = v
+
+            vector = list(distribution.values())
+            results.append(vector)
+        normalized = normalize(results)  # l2 normalization
+        return normalized
 
 
-def create_tfidf():
-    german_stop_words = stopwords.words("german")
-    tfidf = TfidfVectorizer(
-        min_df=10, ngram_range=(1, 2), stop_words=german_stop_words
-    )  # prepare vectorizer
-    # tfidf.fit_transform(df["post"])
-    return tfidf
+# POS Tag dependencies
+class POSDependencyDistribution(BaseEstimator):
+    """POS Distribution encoding"""
+
+    def get_feature_names(self):
+        return [self.__class__.__name__]
+
+    def fit(self, X, y):
+        all_dep = [
+            "ROOT",
+            "acl",
+            "acomp",
+            "advcl",
+            "advmod",
+            "agent",
+            "amod",
+            "appos",
+            "attr",
+            "aux",
+            "auxpass",
+            "case",
+            "cc",
+            "ccomp",
+            "compound",
+            "conj",
+            "csubj",
+            "csubjpass",
+            "dative",
+            "dep",
+            "det",
+            "dobj",
+            "expl",
+            "intj",
+            "mark",
+            "meta",
+            "neg",
+            "nmod",
+            "npadvmod",
+            "nsubj",
+            "nsubjpass",
+            "nummod",
+            "oprd",
+            "parataxis",
+            "pcomp",
+            "pobj",
+            "poss",
+            "preconj",
+            "predet",
+            "prep",
+            "prt",
+            "punct",
+            "quantmod",
+            "relcl",
+            "xcomp",
+        ]
+        self.empty_distribution = {k: 0 for k in all_dep}  # count all possible tags
+        self.nlp = spacy.load(SPACY_DATA_PATH)
+        return self
+
+    def transform(self, X):
+        results = []
+        for sentence in X:
+            doc = self.nlp(sentence)
+            distribution = self.empty_distribution.copy()
+
+            for k, v in doc.count_by(spacy.attrs.DEP).items():
+                name = doc.vocab[k].text
+                distribution[name] = v
+
+            vector = list(distribution.values())
+            results.append(vector)
+        normalized = normalize(results)  # l2 normalization
+        return normalized
 
 
 """

@@ -5,3 +5,4 @@ nltk
 xlrd
 TextBlob
 sklearn
+spacy
