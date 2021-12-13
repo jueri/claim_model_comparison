@@ -1,22 +1,37 @@
-import nltk
-import numpy as np
+# -*- coding: utf-8 -*-
+"""Different features for claim detection models. 
+
+This model contains various features used in different claim detection 
+models to detect if a sentence contains a claim or not.
+
+
+Example:
+	The features are implemented as `sklearn` estimator classes so that
+    they can easily be used in pipelines like that:
+
+        $ from sklearn.compose import ColumnTransformer
+        $ from features import POSTagDistribution
+        $ 
+        $ column_transformer = ColumnTransformer(
+        $    [("POS_tag", POSTagDistribution(), "Sentence")]
+        $   )
+
+"""
 import os
+
+import numpy as np
+import spacy
+import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 from sklearn.base import BaseEstimator
 from sklearn.feature_extraction.text import TfidfVectorizer
-from textblob import TextBlob
-from sklearn.preprocessing import normalize
-
 from sklearn.metrics.pairwise import cosine_similarity
-import spacy
+from sklearn.preprocessing import normalize
+from textblob import TextBlob
 
-NLTK_DATA_PATH = os.path.join("data", "nltk_data")
+from config import *
+
 nltk.data.path.append(NLTK_DATA_PATH)
-nltk.download("vader_lexicon", NLTK_DATA_PATH)
-
-SPACY_MODEL_NAME = "en_core_web_sm"
-SPACY_DATA_PATH = os.path.join("data", "spacy_data", SPACY_MODEL_NAME)
-
 
 class ThatToken(BaseEstimator):
     """THAT encoding"""
