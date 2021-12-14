@@ -18,7 +18,10 @@ import subprocess
 
 import nltk
 import spacy
-from config import NLTK_DATA_PATH, SPACY_DATA_PATH, SPACY_MODEL_NAME
+import fasttext
+
+from config import NLTK_DATA_PATH, SPACY_DATA_PATH, SPACY_MODEL_NAME, FASTTEXT_PATH, BASE_PATH
+from src.dataset import preprocess_dataset
 
 # setup Spacy
 if not os.path.exists(SPACY_DATA_PATH):
@@ -30,5 +33,14 @@ if not os.path.exists(SPACY_DATA_PATH):
 # setup NLTK
 if not os.path.exists(NLTK_DATA_PATH):
     os.makedirs(NLTK_DATA_PATH)
-    nltk.data.path.append(NLTK_DATA_PATH)
     nltk.download("vader_lexicon", NLTK_DATA_PATH)
+    nltk.download("wordnet", NLTK_DATA_PATH)
+    nltk.download("stopwords", NLTK_DATA_PATH)
+    nltk.download("punkt", NLTK_DATA_PATH)
+    nltk.data.path.append(NLTK_DATA_PATH)
+
+if not os.path.exists(FASTTEXT_PATH):
+    os.makedirs(FASTTEXT_PATH)
+
+if "CE-ACL_processed.csv" not in os.listdir(BASE_PATH):
+    preprocess_dataset()

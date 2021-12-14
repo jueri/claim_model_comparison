@@ -1,5 +1,9 @@
 # Comparison of 5 different claim detection models
 ### Todo:
-- [ ] Data preparation
-- [ ] Feature engeniering
-- [ ] Model training
+- [ ] adapt fasttext model
+- [ ] include W&B
+- [ ] Update dataset preprocessing
+- [ ] update readme
+- [ ] run experiment
+- [ ] document prepare_dataset
+- [ ] load dataset 

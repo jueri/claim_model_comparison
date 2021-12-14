@@ -11,6 +11,7 @@ CLAIMS_PATH = os.path.join(BASE_PATH, "2014_7_18_ibm_CDCdata.xls")
 ARTICLE_PATH = os.path.join(BASE_PATH, "wiki12_articles")
 DATA_PATH = os.path.join(BASE_PATH, "CE-ACL_processed.csv")
 
+
 # NLTK
 NLTK_DATA_PATH = os.path.join("data", "nltk_data")
 
@@ -22,3 +23,6 @@ SPACY_DATA_PATH = os.path.join("data", "spacy_data", SPACY_MODEL_NAME)
 PYSERINI_PATH = os.path.join("data", "pyserini")
 INDEX_PATH = os.path.join(PYSERINI_PATH, "index")
 CLAIM_LEXICON_PATH = os.path.join("data", "claim_lexicon.txt")
+
+# Fasttext
+FASTTEXT_PATH = os.path.join("data", "fasttext")
