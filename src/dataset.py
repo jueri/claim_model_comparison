@@ -16,9 +16,12 @@ import nltk
 from nltk import sent_tokenize
 
 import pandas as pd
-from config import DATA_PATH, CLAIMS_PATH, ARTICLE_PATH, BASE_PATH
+from config import DATA_PATH, CLAIMS_PATH, ARTICLE_PATH, BASE_PATH, NLTK_DATA_PATH
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+
+nltk.data.path.append(NLTK_DATA_PATH)
+
 
 def load_dataset() -> pd.DataFrame:
     """Function to load the dataset.

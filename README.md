@@ -7,3 +7,5 @@
 - [ ] run experiment
 - [ ] document prepare_dataset
 - [ ] load dataset 
+    - ordner anlegen `wiki12_articles`
+    - tar entpacken `tar -xf wiki12_articles.tar -C wiki12_articles`
