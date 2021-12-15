@@ -17,8 +17,6 @@ from nltk import sent_tokenize
 
 import pandas as pd  # type: ignore
 from config import DATA_PATH, CLAIMS_PATH, ARTICLE_PATH, BASE_PATH, NLTK_DATA_PATH
-from nltk.corpus import stopwords  # type: ignore
-from nltk.stem import WordNetLemmatizer  # type: ignore
 from sklearn.model_selection import train_test_split  # type: ignore
 
 
@@ -45,40 +43,6 @@ def load_dataset(test_size: float=0.2) -> pd.DataFrame:
     )
     return X_train, X_test, y_train, y_test
 
-
-stemmer = WordNetLemmatizer()
-
-def fasttext_preprocessing(document):
-    """Preprocessing pipeline from: https://stackabuse.com/python-for-nlp-working-with-facebook-fasttext-library/"""
-    # Remove all the special characters
-    document = re.sub(r'\W', ' ', str(document))
-
-    # remove all single characters
-    document = re.sub(r'\s+[a-zA-Z]\s+', ' ', document)
-
-    # Remove single characters from the start
-    document = re.sub(r'\^[a-zA-Z]\s+', ' ', document)
-
-    # Substituting multiple spaces with single space
-    document = re.sub(r'\s+', ' ', document, flags=re.I)
-
-    # Removing prefixed 'b'
-    document = re.sub(r'^b\s+', '', document)
-
-    # Converting to Lowercase
-    document = document.lower()
-
-    en_stop = set(stopwords.words('english'))
-    
-    # Lemmatization
-    tokens = document.split()
-    tokens = [stemmer.lemmatize(word) for word in tokens]
-    tokens = [word for word in tokens if word not in en_stop]
-    tokens = [word for word in tokens if len(word) > 3]
-
-    preprocessed_text = ' '.join(tokens)
-
-    return preprocessed_text
 
 
 

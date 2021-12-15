@@ -18,20 +18,71 @@ Example:
 
 """
 import os
+import re
 
 import numpy as np
 import spacy
-import nltk
-from nltk.sentiment import SentimentIntensityAnalyzer
-from sklearn.base import BaseEstimator
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.preprocessing import normalize
-from textblob import TextBlob
+import nltk  # type: ignore
+from nltk.sentiment import SentimentIntensityAnalyzer  # type: ignore
+from nltk.corpus import stopwords  # type: ignore
+from nltk.stem import WordNetLemmatizer  # type: ignore
 
-from config import *
+from sklearn.base import BaseEstimator  # type: ignore
+from sklearn.feature_extraction.text import TfidfVectorizer  # type: ignore
+from sklearn.metrics.pairwise import cosine_similarity  # type: ignore
+from sklearn.preprocessing import normalize  # type: ignore
+from textblob import TextBlob  # type: ignore
+
+from config import NLTK_DATA_PATH, SPACY_DATA_PATH, FASTTEXT_PATH
+from src.dataset import preprocess_dataset
 
 nltk.data.path.append(NLTK_DATA_PATH)
+
+class FastTextPreprocessing(BaseEstimator):
+    """Prepare the dataset for fasttext"""
+
+    def get_feature_names(self):
+        return [self.__class__.__name__]
+
+    def fasttext_preprocessing(self, document):
+        """Preprocessing pipeline from: https://stackabuse.com/python-for-nlp-working-with-facebook-fasttext-library/"""
+        document = re.sub(r'\W', ' ', str(document))  # Remove all the special characters
+        document = re.sub(r'\s+[a-zA-Z]\s+', ' ', document)  # remove all single characters
+        document = re.sub(r'\^[a-zA-Z]\s+', ' ', document)  # Remove single characters from the start
+        document = re.sub(r'\s+', ' ', document, flags=re.I)  # Substituting multiple spaces with single space
+        document = re.sub(r'^b\s+', '', document)  # Removing prefixed 'b'
+        document = document.lower()  # Converting to Lowercase
+
+        en_stop = set(stopwords.words('english'))
+        
+        # Lemmatization
+        tokens = document.split()
+        tokens = [self.stemmer.lemmatize(word) for word in tokens]
+        tokens = [word for word in tokens if word not in en_stop]
+        tokens = [word for word in tokens if len(word) > 3]
+
+        preprocessed_text = ' '.join(tokens)
+
+        return preprocessed_text
+
+    def fit(self, X, y):
+        self.stemmer = WordNetLemmatizer()
+        return self
+
+    def transform(self, X, y, name):
+        path = os.path.join(FASTTEXT_PATH, "dataset_" + name + ".txt")
+        with open(path, 'w', encoding='utf-8') as outFile:
+            for sentence, label in zip(X, y):
+                preprcessed_sentence = self.fasttext_preprocessing(sentence)
+                preprcessed_label = "__label__claim " if label == True else "__label__no_claim "
+
+                processed_data = preprcessed_label + " " + preprcessed_sentence
+
+                outFile.write(processed_data)
+                outFile.write("\n")
+
+        return path
+
 
 class ThatToken(BaseEstimator):
     """THAT encoding"""

@@ -12,13 +12,12 @@ Example:
         $ python -m setup.py
 
 """
-
 import os
 import subprocess
 
-import nltk
-import spacy
-import fasttext
+import nltk  # type: ignore
+import spacy  # type: ignore
+import fasttext  # type: ignore
 
 from config import NLTK_DATA_PATH, SPACY_DATA_PATH, SPACY_MODEL_NAME, FASTTEXT_PATH, BASE_PATH
 from src.dataset import preprocess_dataset

@@ -27,7 +27,7 @@ Example:
 import json
 import os
 
-import pandas as pd
+import pandas as pd  # type: ignore
 from pyserini.index.__main__ import JIndexCollection  # type: ignore
 from pyserini.search import SimpleSearcher  # type: ignore
 from pyserini.search import querybuilder

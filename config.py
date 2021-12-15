@@ -26,3 +26,7 @@ CLAIM_LEXICON_PATH = os.path.join("data", "claim_lexicon.txt")
 
 # Fasttext
 FASTTEXT_PATH = os.path.join("data", "fasttext")
+
+# WandB 
+PROJECT_NAME = "Claim detection models"
+DATASET = "IBM_Debater_(R)_CE-ACL-2014.v0"
