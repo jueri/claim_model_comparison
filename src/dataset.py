@@ -12,29 +12,38 @@ Example:
 import os
 import re
 
-import nltk
+import nltk  # type: ignore
 from nltk import sent_tokenize
 
-import pandas as pd
+import pandas as pd  # type: ignore
 from config import DATA_PATH, CLAIMS_PATH, ARTICLE_PATH, BASE_PATH, NLTK_DATA_PATH
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords  # type: ignore
+from nltk.stem import WordNetLemmatizer  # type: ignore
+from sklearn.model_selection import train_test_split  # type: ignore
+
 
 nltk.data.path.append(NLTK_DATA_PATH)
 
 
-def load_dataset() -> pd.DataFrame:
+def load_dataset(test_size: float=0.2) -> pd.DataFrame:
     """Function to load the dataset.
 
     Returns:
-        pd.DatFrame: Dataframe with all data.
+        X_train (DatFrame): Train data
+        X_test (DatFrame): Test data
+        y_train (DatFrame): Train label
+        y_test (DatFrame): Test label
     """
     data = pd.read_csv(os.path.join(DATA_PATH))  # load Data
 
     claims = data[data["Claim"] == True]
     no_claims = data[data["Claim"] == False].sample(n=len(claims), random_state=42)
     data_sample = pd.concat([claims, no_claims])
-    return data_sample
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        data_sample, data_sample["Claim"], test_size=test_size, random_state=0
+    )
+    return X_train, X_test, y_train, y_test
 
 
 stemmer = WordNetLemmatizer()
