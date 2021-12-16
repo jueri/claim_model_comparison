@@ -26,6 +26,7 @@ CLAIM_LEXICON_PATH = os.path.join("data", "claim_lexicon.txt")
 
 # Fasttext
 FASTTEXT_PATH = os.path.join("data", "fasttext")
+FASTTEXT_BIN_MODEL_PATH = os.path.join("data", "fasttext", "ce.bin")
 
 # WandB 
 PROJECT_NAME = "Claim detection models"

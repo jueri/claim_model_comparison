@@ -32,8 +32,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer  # type: ignore
 from sklearn.metrics.pairwise import cosine_similarity  # type: ignore
 from sklearn.preprocessing import normalize  # type: ignore
 from textblob import TextBlob  # type: ignore
+import fasttext
 
-from config import NLTK_DATA_PATH, SPACY_DATA_PATH, FASTTEXT_PATH
+from config import NLTK_DATA_PATH, SPACY_DATA_PATH, FASTTEXT_PATH, FASTTEXT_BIN_MODEL_PATH
 from src.dataset import preprocess_dataset
 
 nltk.data.path.append(NLTK_DATA_PATH)
@@ -74,7 +75,7 @@ class FastTextPreprocessing(BaseEstimator):
         with open(path, 'w', encoding='utf-8') as outFile:
             for sentence, label in zip(X, y):
                 preprcessed_sentence = self.fasttext_preprocessing(sentence)
-                preprcessed_label = "__label__claim " if label == True else "__label__no_claim "
+                preprcessed_label = "__label__claim" if label == True else "__label__no_claim"
 
                 processed_data = preprcessed_label + " " + preprcessed_sentence
 
@@ -82,6 +83,24 @@ class FastTextPreprocessing(BaseEstimator):
                 outFile.write("\n")
 
         return path
+
+
+class FasttextSentenceVector(BaseEstimator):
+    """Sentence Vector encoding"""
+
+    def get_feature_names(self):
+        return [self.__class__.__name__]
+
+    def fit(self, X, y):
+        self.ft = fasttext.load_model(FASTTEXT_BIN_MODEL_PATH)
+        return self
+
+    def transform(self, X):
+        results = []
+        for sentence in X:
+            sentence_vector = self.ft.get_sentence_vector(sentence)
+            results.append(sentence_vector)
+        return np.array(results)
 
 
 class ThatToken(BaseEstimator):
