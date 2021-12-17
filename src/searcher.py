@@ -26,6 +26,7 @@ Example:
 
 import json
 import os
+import shutil
 
 import pandas as pd  # type: ignore
 from pyserini.index.__main__ import JIndexCollection  # type: ignore
@@ -83,6 +84,9 @@ def create_index(data_path: str, index_path: str, language: str = "english"):
         os.mkdir(index_path)
     except OSError as error:
         print(error)
+        shutil.rmtree(index_path)
+        os.mkdir(index_path)
+
 
     JIndexCollection.main(args)
     searcher = SimpleSearcher(index_path)

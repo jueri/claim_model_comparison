@@ -6,7 +6,7 @@ Example:
     The dataset can simply be loaded with a singe function:
         $ from dataset import load_dataset
         $
-        $ load_dataset()
+        $ X_train, X_test, y_train, y_test = load_dataset(dataset_path=DATASET_2014_PATH, false_class_balance=FALSE_CLASS_BALANCE)
 
 """
 import os
@@ -23,15 +23,18 @@ from sklearn.model_selection import train_test_split  # type: ignore
 nltk.data.path.append(NLTK_DATA_PATH)
 
 
-def load_dataset(dataset_path: str, split_size: float=0.2, false_class_balance: float=1.0) -> pd.DataFrame:
-    """Function to load the dataset.
+def load_dataset(dataset_path: str, split_size: float=0.2, false_class_balance: float=1.0) -> tuple[pd.DataFrame, pd.DataFrame, pd.Array, pd.Array]:
+    """Import a prpared dataset, downsample the non claim class and return train and test splits.
+
+    Args:
+        dataset_path (str): path to the prepared dataset.
+        split_size (float, optional): Relative size of the test data split compared to the train split. Defaults to 0.2.
+        false_class_balance (float, optional): Relative size of the non claim class compared to the claim class. Defaults to 1.0.
 
     Returns:
-        X_train (DatFrame): Train data
-        X_test (DatFrame): Test data
-        y_train (DatFrame): Train label
-        y_test (DatFrame): Test label
+        tuple[pd.DataFrame, pd.Array]: train and test data frames and label arrays
     """
+
     data = pd.read_csv(os.path.join(dataset_path))  # load Data
 
     claims = data[data["Claim"] == True]
@@ -49,6 +52,8 @@ def load_dataset(dataset_path: str, split_size: float=0.2, false_class_balance: 
 
 
 def preprocess_dataset_2014():
+    """Prepare the dataset IBM_Debater_(R)_CE-ACL-2014.v0 for model training."""
+
     original_claims = pd.read_excel(CLAIMS_PATH)[["Article", "Claim"]]
     articles = os.listdir(ARTICLE_PATH)  # list of all articles
     frames = []
@@ -88,6 +93,8 @@ def preprocess_dataset_2014():
 
 
 def preprocess_dataset_2018():
+    """Prepare the dataset IBM_Debater_(R)_claim_sentences_search for model training."""
+    
     names = ["id", "Article", "mc", "Sentence", "query_pattern", "score", "Claim", "url"]
     data = pd.read_csv(os.path.join(DATASET_2018_DIR, "test_set.csv"), names=names)
     data["Claim"] = data["Claim"].apply(lambda x: True if x==1 else False)

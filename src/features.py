@@ -35,7 +35,6 @@ from textblob import TextBlob  # type: ignore
 import fasttext
 
 from config import NLTK_DATA_PATH, SPACY_DATA_PATH, FASTTEXT_PATH, FASTTEXT_BIN_MODEL_PATH
-from src.dataset import preprocess_dataset
 
 nltk.data.path.append(NLTK_DATA_PATH)
 
@@ -86,7 +85,7 @@ class FastTextPreprocessing(BaseEstimator):
 
 
 class FasttextSentenceVector(BaseEstimator):
-    """Sentence Vector encoding"""
+    """Load fasttext sentence vectors from a pretrained, binary model."""
 
     def get_feature_names(self):
         return [self.__class__.__name__]
@@ -104,7 +103,7 @@ class FasttextSentenceVector(BaseEstimator):
 
 
 class ThatToken(BaseEstimator):
-    """THAT encoding"""
+    """Encode a binary feature by the presence of the token `that`"""
 
     def get_feature_names(self):
         return [self.__class__.__name__]
@@ -123,7 +122,7 @@ class ThatToken(BaseEstimator):
 
 
 class Sentiment(BaseEstimator):
-    """Sentiment encoding"""
+    """Create a feature based on the sentiment of the sentence using vader."""
 
     def get_feature_names(self):
         return [self.__class__.__name__]
@@ -141,7 +140,7 @@ class Sentiment(BaseEstimator):
 
 
 class Subjectivity(BaseEstimator):
-    """Subjectivity encoding"""
+    """Create a feature based on the subjectivity of the sentence using TextBlob."""
 
     def get_feature_names(self):
         return [self.__class__.__name__]
@@ -159,7 +158,7 @@ class Subjectivity(BaseEstimator):
 
 
 class SentenceTopicSimilarity(BaseEstimator):
-    """Topic, Sentence similarity encoding"""
+    """Claculate the similarity between the sentence and the topic."""
 
     def get_feature_names(self):
         return [self.__class__.__name__]
@@ -182,17 +181,8 @@ class SentenceTopicSimilarity(BaseEstimator):
         return np.array(results)
 
 
-"""
-Liebeck et al. (2016) -> SVM
-- Unigrams
-- L2 Normalized POS Tag distribution of STTS
-- L2 Normalized POS Tag dependencies TIGER Schema
-"""
-# unigrams
-
-# POS Tags distribution
 class POSTagDistribution(BaseEstimator):
-    """POS Distribution encoding"""
+    """Create a feature based on the POS distribution."""
 
     def get_feature_names(self):
         return [self.__class__.__name__]
@@ -221,7 +211,7 @@ class POSTagDistribution(BaseEstimator):
 
 # POS Tag dependencies
 class POSDependencyDistribution(BaseEstimator):
-    """POS Distribution encoding"""
+    """Feature based on the POS dependency distribution."""
 
     def get_feature_names(self):
         return [self.__class__.__name__]
@@ -292,23 +282,3 @@ class POSDependencyDistribution(BaseEstimator):
             results.append(vector)
         normalized = normalize(results)  # l2 normalization
         return normalized
-
-
-"""
-Levy et al. (2017) -> Claim Sentence Query (CSQ)
-- Keyword that
-- main concept
-- Lexicon
-"""
-
-
-"""
-Chakrabarty et al. (2019) -> LSTM
-- sentence (LSTM)
-"""
-
-
-"""
-Toledo-Ronen et al. (2020) -> mBERT
-- BERT embedding
-"""
