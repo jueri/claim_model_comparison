@@ -19,8 +19,8 @@ import nltk  # type: ignore
 import spacy  # type: ignore
 import fasttext  # type: ignore
 
-from config import NLTK_DATA_PATH, SPACY_DATA_PATH, SPACY_MODEL_NAME, FASTTEXT_PATH, BASE_PATH
-from src.dataset import preprocess_dataset
+from config import NLTK_DATA_PATH, SPACY_DATA_PATH, SPACY_MODEL_NAME, FASTTEXT_PATH, DATASET_2014_DIR, DATASET_2018_DIR
+from src.dataset import preprocess_dataset_2014, preprocess_dataset_2018
 
 # setup Spacy
 if not os.path.exists(SPACY_DATA_PATH):
@@ -41,5 +41,8 @@ if not os.path.exists(NLTK_DATA_PATH):
 if not os.path.exists(FASTTEXT_PATH):
     os.makedirs(FASTTEXT_PATH)
 
-if "CE-ACL_processed.csv" not in os.listdir(BASE_PATH):
-    preprocess_dataset()
+if "CE-ACL_processed.csv" not in os.listdir(DATASET_2014_DIR):
+    preprocess_dataset_2014()
+    
+if "claim_sentence_search.csv" not in os.listdir(DATASET_2018_DIR):
+    preprocess_dataset_2018()

@@ -16,14 +16,14 @@ import nltk  # type: ignore
 from nltk import sent_tokenize
 
 import pandas as pd  # type: ignore
-from config import DATA_PATH, CLAIMS_PATH, ARTICLE_PATH, BASE_PATH, NLTK_DATA_PATH
+from config import DATASET_2018_DIR, CLAIMS_PATH, ARTICLE_PATH, NLTK_DATA_PATH, DATASET_2018_PATH, DATASET_2014_PATH
 from sklearn.model_selection import train_test_split  # type: ignore
 
 
 nltk.data.path.append(NLTK_DATA_PATH)
 
 
-def load_dataset(test_size: float=0.2) -> pd.DataFrame:
+def load_dataset(dataset_path: str, split_size: float=0.2, false_class_balance: float=1.0) -> pd.DataFrame:
     """Function to load the dataset.
 
     Returns:
@@ -32,21 +32,23 @@ def load_dataset(test_size: float=0.2) -> pd.DataFrame:
         y_train (DatFrame): Train label
         y_test (DatFrame): Test label
     """
-    data = pd.read_csv(os.path.join(DATA_PATH))  # load Data
+    data = pd.read_csv(os.path.join(dataset_path))  # load Data
 
     claims = data[data["Claim"] == True]
-    no_claims = data[data["Claim"] == False].sample(n=len(claims), random_state=42)
+
+    n_samples = int(len(claims) * false_class_balance)
+    no_claims = data[data["Claim"] == False].sample(n=n_samples, random_state=42)
     data_sample = pd.concat([claims, no_claims])
 
     X_train, X_test, y_train, y_test = train_test_split(
-        data_sample, data_sample["Claim"], test_size=test_size, random_state=0
+        data_sample, data_sample["Claim"], test_size=split_size, random_state=0
     )
     return X_train, X_test, y_train, y_test
 
 
 
 
-def preprocess_dataset():
+def preprocess_dataset_2014():
     original_claims = pd.read_excel(CLAIMS_PATH)[["Article", "Claim"]]
     articles = os.listdir(ARTICLE_PATH)  # list of all articles
     frames = []
@@ -82,4 +84,17 @@ def preprocess_dataset():
         frames.append(df)
 
     sentences = pd.concat(frames).reset_index()[["Article", "Sentence", "Claim"]]
-    sentences.to_csv(os.path.join(BASE_PATH, "CE-ACL_processed.csv"), index=False)
+    sentences.to_csv(DATASET_2014_PATH, index=False)
+
+
+def preprocess_dataset_2018():
+    names = ["id", "Article", "mc", "Sentence", "query_pattern", "score", "Claim", "url"]
+    data = pd.read_csv(os.path.join(DATASET_2018_DIR, "test_set.csv"), names=names)
+    data["Claim"] = data["Claim"].apply(lambda x: True if x==1 else False)
+
+        # Clean text
+    data["Sentence"] = data["Sentence"].str.replace("[REF]", "", regex=False) 
+    data["Sentence"] = data["Sentence"].str.replace("[REF", "", regex=False)
+    data["Sentence"] = data["Sentence"].str.replace(" .", ".", regex=False)
+    sentences = data[["Article", "Sentence", "Claim"]]
+    sentences.to_csv(DATASET_2018_PATH, index=False)    
