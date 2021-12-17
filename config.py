@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Config file to specify some setup variables. 
+"""Config file to specify setup variables. 
 
 This file contains setup variables the models and features rely on.
 """

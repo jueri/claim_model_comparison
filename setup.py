@@ -7,7 +7,7 @@ the specified path. Further, NLTK data like the `vader_lexicon`
 and `punct` will be downloaded.
 
 Example:
-    Just run this setup script with:
+    Run this setup script with:
 
         $ python -m setup.py
 
@@ -17,7 +17,6 @@ import subprocess
 
 import nltk  # type: ignore
 import spacy  # type: ignore
-import fasttext  # type: ignore
 
 from config import NLTK_DATA_PATH, SPACY_DATA_PATH, SPACY_MODEL_NAME, FASTTEXT_PATH, DATASET_2014_DIR, DATASET_2018_DIR
 from src.dataset import preprocess_dataset_2014, preprocess_dataset_2018
