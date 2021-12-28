@@ -8,10 +8,9 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 RUN apt-get update && \
     apt-get install openjdk-11-jdk -y
 
-# need enter
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# Install rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN source $HOME/.cargo/env
-
 
 # [Optional] If your pip requirements rarely change, uncomment this section to add them to the image.
 COPY .devcontainer/requirements.txt /tmp/pip-tmp/
