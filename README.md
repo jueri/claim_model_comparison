@@ -9,7 +9,7 @@ This repo holds a [Visual Studio Code (VS Code)](https://code.visualstudio.com/)
 Alternatively, can the dependencies be installed using with the following command:
 `pip install -r .devcontainer/requirements.txt`
 
-Default directorys and parameter can be specified in [config.py](https://github.com/jueri/claim_model_comparison/tree/master/config.py).
+Default directorys and parameter can be defined in [config.py](https://github.com/jueri/claim_model_comparison/tree/master/config.py).
 After installation please run the [setup.py](https://github.com/jueri/claim_model_comparison/tree/master/setup.py) file to create the expected directories and download additional data.
 
 ### Content 📋
