@@ -10,11 +10,6 @@ RUN apt-get update && \
 
 # Install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-RUN source $HOME/.cargo/env
-
-# [Optional] If your pip requirements rarely change, uncomment this section to add them to the image.
-COPY .devcontainer/requirements.txt /tmp/pip-tmp/
-
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
