@@ -21,12 +21,12 @@ DATASETS = {
     "dataset_2014_de": {
         "base_path": "data",
         "name": "IBM_Debater_(R)_CE-ACL-2014.v0_translated",
-        "data": "CE-ACL_processed_de.csv",
+        "data": "CE-ACL_processed_de_g.csv",
     },
     "dataset_2018_de": {
         "base_path": "data",
         "name": "IBM_Debater_(R)_claim_sentences_search_translated",
-        "data": "claim_sentence_search_de.csv",
+        "data": "claim_sentence_search_de_g.csv",
     },
     "SMC_2000": {
         "base_path": "data",
