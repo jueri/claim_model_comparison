@@ -27,12 +27,12 @@ Example:
 import json
 import os
 import shutil
+from typing import List
 
 import pandas as pd  # type: ignore
 from pyserini.index.__main__ import JIndexCollection  # type: ignore
 from pyserini.search import SimpleSearcher  # type: ignore
 from pyserini.search import querybuilder
-from typing import List
 
 
 def convert_data(passages: pd.DataFrame, data_path: str):

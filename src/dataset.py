@@ -11,21 +11,14 @@ Example:
 """
 import os
 import re
+from typing import Tuple
 
 import nltk  # type: ignore
-from nltk import sent_tokenize
-
 import pandas as pd  # type: ignore
-from config import (
-    DATASET_2018_DIR,
-    CLAIMS_PATH,
-    ARTICLE_PATH,
-    NLTK_DATA_PATH,
-    DATASET_2018_PATH,
-    DATASET_2014_PATH,
-)
+from nltk import sent_tokenize
 from sklearn.model_selection import train_test_split  # type: ignore
-from typing import Tuple
+
+from config import DATASETS, NLTK_DATA_PATH
 
 nltk.data.path.append(NLTK_DATA_PATH)
 
@@ -60,9 +53,12 @@ def load_dataset(
 
 def preprocess_dataset_2014():
     """Prepare the dataset IBM_Debater_(R)_CE-ACL-2014.v0 for model training."""
+    base_path = DATASETS["dataset_2014"]["base_path"]
+    claims_path = os.path.join(base_path, DATASETS["dataset_2014"]["claim_file"])
+    articles_path = os.path.join(base_path, DATASETS["dataset_2014"]["articles_file"])
 
-    original_claims = pd.read_excel(CLAIMS_PATH)[["Article", "Claim"]]
-    articles = os.listdir(ARTICLE_PATH)  # list of all articles
+    original_claims = pd.read_excel(claims_path)[["Article", "Claim"]]
+    articles = os.listdir(articles_path)  # list of all articles
     frames = []
 
     for article in articles:
@@ -76,7 +72,7 @@ def preprocess_dataset_2014():
 
         # Prepare table
         df = pd.read_csv(
-            os.path.join(ARTICLE_PATH, article),
+            os.path.join(articles_path, article),
             delimiter="\t",
             names=["Text"],
             quoting=3,
@@ -107,11 +103,15 @@ def preprocess_dataset_2014():
         frames.append(df)
 
     sentences = pd.concat(frames).reset_index()[["Article", "Sentence", "Claim"]]
-    sentences.to_csv(DATASET_2014_PATH, index=False)
+
+    sentences.to_csv(
+        os.path.join(base_path, DATASETS["dataset_2014"]["data"]), index=False
+    )
 
 
 def preprocess_dataset_2018():
     """Prepare the dataset IBM_Debater_(R)_claim_sentences_search for model training."""
+    base_path = DATASETS["dataset_2018"]["base_path"]
 
     names = [
         "id",
@@ -123,7 +123,7 @@ def preprocess_dataset_2018():
         "Claim",
         "url",
     ]
-    data = pd.read_csv(os.path.join(DATASET_2018_DIR, "test_set.csv"), names=names)
+    data = pd.read_csv(os.path.join(base_path, "test_set.csv"), names=names)
     data["Claim"] = data["Claim"].apply(lambda x: True if x == 1 else False)
 
     # Clean text
@@ -131,4 +131,6 @@ def preprocess_dataset_2018():
     data["Sentence"] = data["Sentence"].str.replace("[REF", "", regex=False)
     data["Sentence"] = data["Sentence"].str.replace(" .", ".", regex=False)
     sentences = data[["Article", "Sentence", "Claim"]]
-    sentences.to_csv(DATASET_2018_PATH, index=False)
+    sentences.to_csv(
+        os.path.join(base_path, DATASETS["dataset_2014"]["data"]), index=False
+    )

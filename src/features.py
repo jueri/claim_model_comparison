@@ -20,25 +20,24 @@ Example:
 import os
 import re
 
+import fasttext
+import nltk  # type: ignore
 import numpy as np
 import spacy
-import nltk  # type: ignore
-from nltk.sentiment import SentimentIntensityAnalyzer  # type: ignore
 from nltk.corpus import stopwords  # type: ignore
+from nltk.sentiment import SentimentIntensityAnalyzer  # type: ignore
 from nltk.stem import WordNetLemmatizer  # type: ignore
-
 from sklearn.base import BaseEstimator  # type: ignore
 from sklearn.feature_extraction.text import TfidfVectorizer  # type: ignore
 from sklearn.metrics.pairwise import cosine_similarity  # type: ignore
 from sklearn.preprocessing import normalize  # type: ignore
 from textblob import TextBlob  # type: ignore
-import fasttext
 
 from config import (
+    FASTTEXT_BIN_MODEL_PATH,
+    FASTTEXT_PATH,
     NLTK_DATA_PATH,
     SPACY_DATA_PATH,
-    FASTTEXT_PATH,
-    FASTTEXT_BIN_MODEL_PATH,
 )
 
 nltk.data.path.append(NLTK_DATA_PATH)
