@@ -32,6 +32,7 @@ import pandas as pd  # type: ignore
 from pyserini.index.__main__ import JIndexCollection  # type: ignore
 from pyserini.search import SimpleSearcher  # type: ignore
 from pyserini.search import querybuilder
+from typing import List
 
 
 def convert_data(passages: pd.DataFrame, data_path: str):
@@ -87,14 +88,13 @@ def create_index(data_path: str, index_path: str, language: str = "english"):
         shutil.rmtree(index_path)
         os.mkdir(index_path)
 
-
     JIndexCollection.main(args)
     searcher = SimpleSearcher(index_path)
     searcher.set_language(language)
     return searcher
 
 
-def build_query(should: list[str], must: list[str]):
+def build_query(should: List[str], must: List[str]):
     """Create an anserini query with boolean conditions.
 
     Args:

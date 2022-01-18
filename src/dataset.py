@@ -16,16 +16,23 @@ import nltk  # type: ignore
 from nltk import sent_tokenize
 
 import pandas as pd  # type: ignore
-from config import DATASET_2018_DIR, CLAIMS_PATH, ARTICLE_PATH, NLTK_DATA_PATH, DATASET_2018_PATH, DATASET_2014_PATH
+from config import (
+    DATASET_2018_DIR,
+    CLAIMS_PATH,
+    ARTICLE_PATH,
+    NLTK_DATA_PATH,
+    DATASET_2018_PATH,
+    DATASET_2014_PATH,
+)
 from sklearn.model_selection import train_test_split  # type: ignore
-
+from typing import Tuple
 
 nltk.data.path.append(NLTK_DATA_PATH)
 
 
 def load_dataset(
     dataset_path: str, split_size: float = 0.2, false_class_balance: float = 1.0
-) -> tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
     """Import a prpared dataset, downsample the non claim class and return train and test splits.
 
     Args:
@@ -62,15 +69,22 @@ def preprocess_dataset_2014():
         article_name = article.replace("_", " ")
 
         # Load and escape claim passages to find
-        claim_sentences = original_claims[original_claims["Article"] == article_name]["Claim"]
+        claim_sentences = original_claims[original_claims["Article"] == article_name][
+            "Claim"
+        ]
         claim_sentences = claim_sentences.apply(lambda x: re.escape(x)).to_list()
 
         # Prepare table
         df = pd.read_csv(
-            os.path.join(ARTICLE_PATH, article), delimiter="\t", names=["Text"], quoting=3
+            os.path.join(ARTICLE_PATH, article),
+            delimiter="\t",
+            names=["Text"],
+            quoting=3,
         )  # load article to table
         df["Article"] = article_name  # add article name
-        df["Sentence"] = df.apply(lambda x: sent_tokenize(x["Text"]), axis=1)  # split text to sentences
+        df["Sentence"] = df.apply(
+            lambda x: sent_tokenize(x["Text"]), axis=1
+        )  # split text to sentences
         df = df.explode("Sentence")  # each sentence one row
 
         # Clean text
@@ -83,7 +97,9 @@ def preprocess_dataset_2014():
 
         # Add label if topic has claims
         if claim_sentences:  # skip articles without claims
-            df["Claim"] = df["Sentence"].str.contains("|".join(claim_sentences))  # Regex search for claims
+            df["Claim"] = df["Sentence"].str.contains(
+                "|".join(claim_sentences)
+            )  # Regex search for claims
         else:
             print("No claims in article:", article_name)
             df["Claim"] = False
@@ -97,7 +113,16 @@ def preprocess_dataset_2014():
 def preprocess_dataset_2018():
     """Prepare the dataset IBM_Debater_(R)_claim_sentences_search for model training."""
 
-    names = ["id", "topic", "Article", "Sentence", "query_pattern", "score", "Claim", "url"]
+    names = [
+        "id",
+        "topic",
+        "Article",
+        "Sentence",
+        "query_pattern",
+        "score",
+        "Claim",
+        "url",
+    ]
     data = pd.read_csv(os.path.join(DATASET_2018_DIR, "test_set.csv"), names=names)
     data["Claim"] = data["Claim"].apply(lambda x: True if x == 1 else False)
 

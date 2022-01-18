@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd  # type: ignore
 import seaborn as sn  # type: ignore
 from sklearn.metrics import auc, confusion_matrix, roc_curve  # type: ignore
+from typing import List
 
 
 def roc_plot(y_test: pd.Series, y_score: np.ndarray, title: str):
@@ -63,7 +64,9 @@ def roc_plot(y_test: pd.Series, y_score: np.ndarray, title: str):
     plt.show()
 
 
-def confusion_matrix_plot(y_test: pd.Series, y_pred: np.ndarray, label: list[str], title: str):
+def confusion_matrix_plot(
+    y_test: pd.Series, y_pred: np.ndarray, label: List[str], title: str
+):
     """Plot a confusion matrix for model evaluation.
     The sklearn confusion matrix generator is used. The order of cells is, therefore:
     TN | FP
@@ -79,8 +82,14 @@ def confusion_matrix_plot(y_test: pd.Series, y_pred: np.ndarray, label: list[str
         title (str): The title for the plot.
     """
     sn.set(rc={"figure.facecolor": "white"})
-    cm = pd.DataFrame(confusion_matrix(y_test, y_pred), index=[i for i in label], columns=[i for i in label])
+    cm = pd.DataFrame(
+        confusion_matrix(y_test, y_pred),
+        index=[i for i in label],
+        columns=[i for i in label],
+    )
     plt.figure(figsize=(10, 7))
     plt.title(title)
 
-    sn.heatmap(cm, annot=True, fmt="d").set(ylabel="Actual Labels", xlabel="Predicted Labels")
+    sn.heatmap(cm, annot=True, fmt="d").set(
+        ylabel="Actual Labels", xlabel="Predicted Labels"
+    )

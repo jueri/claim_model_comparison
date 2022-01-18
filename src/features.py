@@ -34,9 +34,15 @@ from sklearn.preprocessing import normalize  # type: ignore
 from textblob import TextBlob  # type: ignore
 import fasttext
 
-from config import NLTK_DATA_PATH, SPACY_DATA_PATH, FASTTEXT_PATH, FASTTEXT_BIN_MODEL_PATH
+from config import (
+    NLTK_DATA_PATH,
+    SPACY_DATA_PATH,
+    FASTTEXT_PATH,
+    FASTTEXT_BIN_MODEL_PATH,
+)
 
 nltk.data.path.append(NLTK_DATA_PATH)
+
 
 class FastTextPreprocessing(BaseEstimator):
     """Prepare the dataset for fasttext"""
@@ -46,22 +52,30 @@ class FastTextPreprocessing(BaseEstimator):
 
     def fasttext_preprocessing(self, document):
         """Preprocessing pipeline from: https://stackabuse.com/python-for-nlp-working-with-facebook-fasttext-library/"""
-        document = re.sub(r'\W', ' ', str(document))  # Remove all the special characters
-        document = re.sub(r'\s+[a-zA-Z]\s+', ' ', document)  # remove all single characters
-        document = re.sub(r'\^[a-zA-Z]\s+', ' ', document)  # Remove single characters from the start
-        document = re.sub(r'\s+', ' ', document, flags=re.I)  # Substituting multiple spaces with single space
-        document = re.sub(r'^b\s+', '', document)  # Removing prefixed 'b'
+        document = re.sub(
+            r"\W", " ", str(document)
+        )  # Remove all the special characters
+        document = re.sub(
+            r"\s+[a-zA-Z]\s+", " ", document
+        )  # remove all single characters
+        document = re.sub(
+            r"\^[a-zA-Z]\s+", " ", document
+        )  # Remove single characters from the start
+        document = re.sub(
+            r"\s+", " ", document, flags=re.I
+        )  # Substituting multiple spaces with single space
+        document = re.sub(r"^b\s+", "", document)  # Removing prefixed 'b'
         document = document.lower()  # Converting to Lowercase
 
-        en_stop = set(stopwords.words('english'))
-        
+        en_stop = set(stopwords.words("english"))
+
         # Lemmatization
         tokens = document.split()
         tokens = [self.stemmer.lemmatize(word) for word in tokens]
         tokens = [word for word in tokens if word not in en_stop]
         tokens = [word for word in tokens if len(word) > 3]
 
-        preprocessed_text = ' '.join(tokens)
+        preprocessed_text = " ".join(tokens)
 
         return preprocessed_text
 
@@ -71,10 +85,12 @@ class FastTextPreprocessing(BaseEstimator):
 
     def transform(self, X, y, name):
         path = os.path.join(FASTTEXT_PATH, "dataset_" + name + ".txt")
-        with open(path, 'w', encoding='utf-8') as outFile:
+        with open(path, "w", encoding="utf-8") as outFile:
             for sentence, label in zip(X, y):
                 preprcessed_sentence = self.fasttext_preprocessing(sentence)
-                preprcessed_label = "__label__claim" if label == True else "__label__no_claim"
+                preprcessed_label = (
+                    "__label__claim" if label == True else "__label__no_claim"
+                )
 
                 processed_data = preprcessed_label + " " + preprcessed_sentence
 
@@ -151,7 +167,9 @@ class Subjectivity(BaseEstimator):
     def transform(self, X):
         results = []
         for sentence in X:
-            claim = TextBlob(sentence)  # 0.0 is very objective and 1.0 is very subjective
+            claim = TextBlob(
+                sentence
+            )  # 0.0 is very objective and 1.0 is very subjective
             subjectivity = claim.sentiment.subjectivity
             results.append([subjectivity])
         return np.array(results)
