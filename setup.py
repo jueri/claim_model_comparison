@@ -18,14 +18,22 @@ import subprocess
 import nltk  # type: ignore
 import spacy  # type: ignore
 
-from config import NLTK_DATA_PATH, SPACY_DATA_PATH, SPACY_MODEL_NAME, FASTTEXT_PATH, DATASET_2014_DIR, DATASET_2018_DIR
+from config import (
+    NLTK_DATA_PATH,
+    SPACY_DATA_PATH,
+    SPACY_MODEL_NAME,
+    FASTTEXT_PATH,
+    DATASETS,
+)
 from src.dataset import preprocess_dataset_2014, preprocess_dataset_2018
 
 # setup Spacy
 if not os.path.exists(SPACY_DATA_PATH):
-    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])  # download model 
-    os.makedirs(SPACY_DATA_PATH)  # create foleder 
-    nlp = spacy.load(SPACY_MODEL_NAME)  # load model 
+    subprocess.run(
+        ["python", "-m", "spacy", "download", "en_core_web_sm"]
+    )  # download model
+    os.makedirs(SPACY_DATA_PATH)  # create foleder
+    nlp = spacy.load(SPACY_MODEL_NAME)  # load model
     nlp.to_disk(SPACY_DATA_PATH)  # save model to created dir
 
 # setup NLTK
@@ -40,8 +48,8 @@ if not os.path.exists(NLTK_DATA_PATH):
 if not os.path.exists(FASTTEXT_PATH):
     os.makedirs(FASTTEXT_PATH)
 
-if "CE-ACL_processed.csv" not in os.listdir(DATASET_2014_DIR):
+if "CE-ACL_processed.csv" not in os.listdir(DATASETS["dataset_2014"]["base_path"]):
     preprocess_dataset_2014()
-    
-if "claim_sentence_search.csv" not in os.listdir(DATASET_2018_DIR):
+
+if "claim_sentence_search.csv" not in os.listdir(DATASETS["dataset_2018"]["base_path"]):
     preprocess_dataset_2018()

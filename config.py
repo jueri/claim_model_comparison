@@ -5,17 +5,40 @@ This file contains setup variables the models and features rely on.
 """
 import os
 
-# Dataset 2014
-DATASET_2014_DIR = os.path.join("data", "IBM_Debater_(R)_CE-ACL-2014.v0")
-CLAIMS_PATH = os.path.join(DATASET_2014_DIR, "2014_7_18_ibm_CDCdata.xls")
-ARTICLE_PATH = os.path.join(DATASET_2014_DIR, "wiki12_articles")
-DATASET_2014_NAME = "IBM_Debater_(R)_CE-ACL-2014.v0"
-DATASET_2014_PATH = os.path.join(DATASET_2014_DIR, "CE-ACL_processed.csv")
-
-# Dataset 2018
-DATASET_2018_DIR = os.path.join("data", "IBM_Debater_(R)_claim_sentences_search")
-DATASET_2018_NAME = "IBM_Debater_(R)_claim_sentences_search"
-DATASET_2018_PATH = os.path.join(DATASET_2018_DIR, "claim_sentence_search.csv")
+DATASETS = {
+    "dataset_2014": {
+        "base_path": os.path.join("data", "IBM_Debater_(R)_CE-ACL-2014.v0"),
+        "claim_file": "2014_7_18_ibm_CDCdata.xls",
+        "articles_file": "2014_7_18_ibm_CDCdata.xls",
+        "name": "IBM_Debater_(R)_CE-ACL-2014.v0",
+        "data": "CE-ACL_processed.csv",
+    },
+    "dataset_2018": {
+        "base_path": os.path.join("data", "IBM_Debater_(R)_claim_sentences_search"),
+        "name": "IBM_Debater_(R)_claim_sentences_search",
+        "data": "claim_sentence_search.csv",
+    },
+    "dataset_2014_de": {
+        "base_path": "data",
+        "name": "IBM_Debater_(R)_CE-ACL-2014.v0_translated",
+        "data": "CE-ACL_processed_de.csv",
+    },
+    "dataset_2018_de": {
+        "base_path": "data",
+        "name": "IBM_Debater_(R)_claim_sentences_search_translated",
+        "data": "claim_sentence_search_de.csv",
+    },
+    "SMC_2000": {
+        "base_path": "data",
+        "name": "SMC_CDC_2000",
+        "data": "SMC_CDC_2000.csv",
+    },
+    "SMC_1000": {
+        "base_path": "data",
+        "name": "SMC_CDC_1000",
+        "data": "SMC_CDC_1000.csv",
+    },
+}
 
 # NLTK
 NLTK_DATA_PATH = os.path.join("data", "nltk_data")
@@ -29,9 +52,9 @@ PYSERINI_PATH = os.path.join("data", "pyserini")
 INDEX_PATH = os.path.join(PYSERINI_PATH, "index")
 CLAIM_LEXICON_PATH = os.path.join("data", "claim_lexicon.txt")
 
-# Fasttext
+# FastText
 FASTTEXT_PATH = os.path.join("data", "fasttext")
 FASTTEXT_BIN_MODEL_PATH = os.path.join("data", "fasttext", "ce.bin")
 
-# WandB 
+# WandB
 PROJECT_NAME = "Claim detection models"
