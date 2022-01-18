@@ -8,14 +8,13 @@ Example:
 
 
 """
-from typing import Any
+from typing import Any, List
 
 import matplotlib.pyplot as plt  # type: ignore
 import numpy as np
 import pandas as pd  # type: ignore
 import seaborn as sn  # type: ignore
 from sklearn.metrics import auc, confusion_matrix, roc_curve  # type: ignore
-from typing import List
 
 
 def roc_plot(y_test: pd.Series, y_score: np.ndarray, title: str):
