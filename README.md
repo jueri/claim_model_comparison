@@ -19,7 +19,7 @@ Default directorys and parameter can be defined in [config.py](https://github.co
 After installation please run the [setup.py](https://github.com/jueri/claim_model_comparison/tree/master/setup.py) file to create the expected directories and download additional data.
 
 
-### Data 💾
+### 💾 Data:
 The models are trained on two datasets: *IBM Debater® - Claims and Evidence* (`IBM_Debater_(R)_CE-ACL-2014.v0`) and *IBM Debater® - Claim Sentences Search* (`IBM_Debater_(R)_claim_sentences_search`). The datasets can be downloaded [here](https://research.ibm.com/haifa/dept/vst/debating_data.shtml) and are expected in the data directory: 
 ```
 ├── IBM_Debater_(R)_CE-ACL-2014.v0                  # DATASET_2014
