@@ -21,19 +21,26 @@ After installation please run the [setup.py](https://github.com/jueri/claim_mode
 ### 💾 Data:
 The models are trained on two datasets: *IBM Debater® - Claims and Evidence* (`IBM_Debater_(R)_CE-ACL-2014.v0`) and *IBM Debater® - Claim Sentences Search* (`IBM_Debater_(R)_claim_sentences_search`). The datasets can be downloaded [here](https://research.ibm.com/haifa/dept/vst/debating_data.shtml) and are expected in the data directory: 
 ```
-├── IBM_Debater_(R)_CE-ACL-2014.v0                  # DATASET_2014
-│   ├── 2014_7_18_ibm_CDCdata.xls
-│   ├── 2014_7_18_ibm_CDEdata.xls
-│   ├── CE-ACL_processed.csv
-│   ├── ReadMe.txt
-│   ├── wiki12_articles
-│   └── ...
-└── IBM_Debater_(R)_claim_sentences_search          # DATASET_2018
-    ├── claim_sentence_search.csv
-    ├── q_mc_heldout.csv
-    ├── q_mc_test.csv
-    ├── q_mc_train.csv
-    ├── readme_mc_queries.txt
-    ├── readme_test_set.txt
-    └── test_set.csv 
+data
+├── IBM_Debater_(R)_CE-ACL-2014.v0                 # dataset_2014 
+│   ├── 2014_7_18_ibm_CDCdata.xls
+│   ├── 2014_7_18_ibm_CDEdata.xls
+│   ├── CE-ACL_processed.csv
+│   ├── ReadMe.txt
+│   ├── wiki12_articles
+│   └── wiki12_articles.tar
+├── IBM_Debater_(R)_claim_sentences_search         # dataset_2018
+│   ├── claim_sentence_search.csv
+│   ├── q_mc_heldout.csv
+│   ├── q_mc_test.csv
+│   ├── q_mc_train.csv
+│   ├── readme_mc_queries.txt
+│   ├── readme_test_set.txt
+│   └── test_set.csv
+├── claim_lexicon.txt  
+├── CE-ACL_processed_de_g.csv                      # dataset_2014_de                             
+├── claim_sentence_search_de_g.csv                 # dataset_2018_de
+├── SMC_1000.csv                                   # SMC_1000
+├── SMC_2000.csv                                   # SMC_2000
+└── SMC_Full.csv                                   # SMC_Full
 ```
