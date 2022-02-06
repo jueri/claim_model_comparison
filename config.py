@@ -30,18 +30,18 @@ DATASETS = {
     },
     "SMC_2000": {
         "base_path": "data",
-        "name": "SMC_CDC_2000",
-        "data": "SMC_CDC_2000.csv",
+        "name": "SMC_2000",
+        "data": "SMC_2000.csv",
     },
     "SMC_1000": {
         "base_path": "data",
-        "name": "SMC_CDC_1000",
-        "data": "SMC_CDC_1000.csv",
+        "name": "SMC_1000",
+        "data": "SMC_1000.csv",
     },
     "SMC_Full": {
         "base_path": "data",
-        "name": "SMC_CDC_Full",
-        "data": "SMC_CDC_Full.csv",
+        "name": "SMC_Full",
+        "data": "SMC_Full.csv",
     },
     "dataset_1418": {
         "base_path": "data",
@@ -67,5 +67,4 @@ FASTTEXT_PATH = os.path.join("data", "fasttext")
 FASTTEXT_BIN_MODEL_PATH = os.path.join("data", "fasttext", "ce.bin")
 
 # WandB
-# PROJECT_NAME = "Claim detection models"
-PROJECT_NAME = "Claim detection models g comp"
+PROJECT_NAME = "Claim detection models"
