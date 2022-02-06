@@ -2,7 +2,7 @@
 ---
 ![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/jueri/claim_model_comparison)
 ### 💡 Info:
-This repository holds the code for a sentence based claim detection model comparison. The main modules can be found in the [src](https://github.com/jueri/claim_model_comparison/src) directory. The notebooks in the root directory interface the claim detection models and guide through the training and evaluation process.
+This repository holds the code for a sentence based claim detection model comparison. The main modules can be found in the [src](https://github.com/jueri/claim_model_comparison/tree/master/src) directory. The notebooks in the root directory interface the claim detection models and guide through the training and evaluation process.
 
 This repository is part of my bachelore theses with the title **Automated statement extractionfrom press briefings**. For more indepth information see the [Statement Extractor](https://github.com/jueri/statement_extractor) repository.
 
