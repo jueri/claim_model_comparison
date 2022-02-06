@@ -21,7 +21,7 @@ After installation please run the [setup.py](https://github.com/jueri/claim_mode
 ### 💾 Data:
 The models are trained on two datasets: *IBM Debater® - Claims and Evidence* (`IBM_Debater_(R)_CE-ACL-2014.v0`) and *IBM Debater® - Claim Sentences Search* (`IBM_Debater_(R)_claim_sentences_search`). The datasets can be downloaded [here](https://research.ibm.com/haifa/dept/vst/debating_data.shtml) and are expected in the data directory.
 
-To train the final model, different german datasets were used. The datasets `SMC_1000`,  `SMC_2000`, and `SMC_Full` are the created datasets and can be found in the [press briefing claim dataset](https://github.com/jueri/SMC_claim_dataset) repo.
+To train the final model, different german datasets were used. The datasets `SMC_1000`,  `SMC_2000`, and `SMC_Full` are the created datasets and can be created with the [press briefing claim dataset](https://github.com/jueri/SMC_claim_dataset) repo.
 
 The datasets `dataset_2014_de`, `dataset_2018_de` are machine translated versions of the IBM datasets. 
 ```
